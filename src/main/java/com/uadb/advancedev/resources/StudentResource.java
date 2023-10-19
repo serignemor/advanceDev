@@ -40,4 +40,9 @@ public class StudentResource {
                         .build()
                 );
     }
+    @PostMapping("/student/{studentId}/courses/{courseId}")
+    public ResponseEntity<String> joinCourse(@PathVariable long studentId, @PathVariable long courseId) {
+        studentService.joinCourse(studentId, courseId);
+        return ResponseEntity.ok("L'étudiant a rejoint le cours avec succès.");
+    }
 }
