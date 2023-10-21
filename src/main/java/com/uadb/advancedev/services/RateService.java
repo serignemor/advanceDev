@@ -10,6 +10,8 @@ import com.uadb.advancedev.repositories.StudentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class RateService {
@@ -30,5 +32,8 @@ public class RateService {
         rate.setRating(rating);
 
         rateRepository.save(rate);
+    }
+    public List<Rate> getAllRatings() {
+        return rateRepository.findAll();
     }
 }
