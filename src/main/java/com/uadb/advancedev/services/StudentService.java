@@ -15,13 +15,7 @@ import java.util.Optional;
 public class StudentService {
 
     private final StudentRepository studentRepository;
-
     private final StudentMapper studentMapper;
-
-
-    public void save(StudentDto studentDTO) {
-        studentRepository.save(studentMapper.toEntity(studentDTO));
-    }
 
 
     public List<StudentDto> getAllStudents() {
@@ -31,7 +25,6 @@ public class StudentService {
 
     public Optional<StudentDto> getStudentById(long idStudent) {
         Optional<Student> studentOpt = studentRepository.findById(idStudent);
-
         if (studentOpt.isPresent()) {
             Student student = studentOpt.get();
             StudentDto studentDTO = studentMapper.toDto(student);
@@ -40,4 +33,29 @@ public class StudentService {
 
         return Optional.empty();
     }
+
+
+    public void save(StudentDto studentDTO) {
+        studentRepository.save(studentMapper.toEntity(studentDTO));
+    }
+
+
+    public Optional<StudentDto> update(long idStudent, StudentDto studentDTO) {
+        Optional<Student> studentOpt = studentRepository.findById(idStudent);
+        if (studentOpt.isPresent()) {
+            Student student = studentOpt.get();
+            studentMapper.update(studentDTO, student);
+            studentRepository.save(student);
+            return Optional.of(studentDTO);
+        }
+
+        return Optional.empty();
+    }
+
+
+    public void delete(long idStudent) {
+        studentRepository.deleteById(idStudent);
+    }
+
+
 }

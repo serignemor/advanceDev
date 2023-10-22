@@ -16,28 +16,46 @@ public class StudentResource {
     private final StudentService studentService;
 
 
-    @PostMapping("/students")
-    public ResponseEntity<Void> save(@RequestBody StudentDto studentDTO) {
-
-        studentService.save(studentDTO);
-
-        return ResponseEntity.status(201).build();
-    }
-
     @GetMapping("/students")
     public ResponseEntity<List<StudentDto>> getStudents() {
-
         return ResponseEntity.ok(studentService.getAllStudents());
     }
 
-    @GetMapping("/students/{studentId}")
-    public ResponseEntity<StudentDto> getStudentById(@PathVariable long studentId) {
-        Optional<StudentDto> studentByIdOpt = studentService.getStudentById(studentId);
 
+    @GetMapping("/students/{studentId}")
+    public ResponseEntity<?> getStudentById(@PathVariable long studentId) {
+        Optional<StudentDto> studentByIdOpt = studentService.getStudentById(studentId);
         return studentByIdOpt.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity
                         .notFound()
                         .build()
                 );
+    }
+
+
+    @PostMapping("/students")
+    public ResponseEntity<?> save(@RequestBody StudentDto studentDTO) {
+        studentService.save(studentDTO);
+        return ResponseEntity.status(201).build();
+    }
+
+
+    @PutMapping("/students/{studentId}")
+    public ResponseEntity<?> update(@PathVariable long studentId,
+                                    @RequestBody StudentDto studentDTO) {
+        Optional<StudentDto> optionalStudent = studentService.update(studentId, studentDTO);
+        return optionalStudent
+                .map(student -> ResponseEntity.ok().build())
+                .orElseGet(() -> ResponseEntity
+                        .notFound()
+                        .build()
+                );
+    }
+
+
+    @DeleteMapping("/students/{studentId}")
+    public ResponseEntity<?> delete(@PathVariable long studentId) {
+        studentService.delete(studentId);
+        return ResponseEntity.status(204).build();
     }
 }

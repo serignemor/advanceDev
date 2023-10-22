@@ -14,9 +14,11 @@ public class CourseMapper {
 
     private final ModelMapper modelMapper;
 
+
     public CourseDto toDto(Course course) {
         return modelMapper.map(course, CourseDto.class);
     }
+
 
     public List<CourseDto> toDto(List<Course> courseList){
         return courseList.stream()
@@ -24,13 +26,20 @@ public class CourseMapper {
                 .toList();
     }
 
+
     public Course toEntity(CourseDto courseDto) {
         return modelMapper.map(courseDto, Course.class);
     }
+
 
     public List<Course> toEntity(List<CourseDto> courseDtoList){
         return courseDtoList.stream()
                 .map(this::toEntity)
                 .toList();
+    }
+
+
+    public void update(CourseDto courseDto, Course course) {
+        modelMapper.map(courseDto, course);
     }
 }

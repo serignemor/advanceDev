@@ -14,6 +14,7 @@ public class EvaluationMapper {
 
     private final ModelMapper modelMapper;
 
+
     public EvaluationDto toDto(Evaluation evaluation) {
         return modelMapper.map(evaluation, EvaluationDto.class);
     }
@@ -24,13 +25,20 @@ public class EvaluationMapper {
                 .toList();
     }
 
+
     public Evaluation toEntity(EvaluationDto evaluationDto) {
         return modelMapper.map(evaluationDto, Evaluation.class);
     }
+
 
     public List<Evaluation> toEntity(List<EvaluationDto> evaluationDtoList){
         return evaluationDtoList.stream()
                 .map(this::toEntity)
                 .toList();
+    }
+
+
+    public void update(EvaluationDto evaluationDto, Evaluation evaluation) {
+        modelMapper.map(evaluationDto, evaluation);
     }
 }

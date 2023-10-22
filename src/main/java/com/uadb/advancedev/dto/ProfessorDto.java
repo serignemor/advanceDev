@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class ProfessorDto {
-
     private long id;
-
     private String name;
 }
