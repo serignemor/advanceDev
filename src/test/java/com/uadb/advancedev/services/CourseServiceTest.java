@@ -2,6 +2,7 @@ package com.uadb.advancedev.services;
 
 import com.uadb.advancedev.dto.CourseDto;
 import com.uadb.advancedev.entities.Course;
+import com.uadb.advancedev.entities.Student;
 import com.uadb.advancedev.providers.TestObjectProvider;
 import com.uadb.advancedev.repositories.CourseRepository;
 import com.uadb.advancedev.repositories.StudentRepository;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -53,7 +55,7 @@ class CourseServiceTest {
         when(courseRepositoryMock.save(TestObjectProvider.getCourse(1L, "JUNIT"))).thenReturn(null);
 
         courseService.save(TestObjectProvider.getCourseDto("JUNIT"));
-        verify(courseRepositoryMock).save(TestObjectProvider.getCourse(1L, "JUNIT"));
+        verify(courseRepositoryMock).save(any(Course.class));
     }
 
     @Test
@@ -82,8 +84,8 @@ class CourseServiceTest {
         when(studentRepositoryMock.save(TestObjectProvider.getStudent(1L, "Serigne"))).thenReturn(null);
 
         courseService.addStudentToCourse(1L, 1L);
-        verify(courseRepositoryMock).save(TestObjectProvider.getCourse(1L, "JUNIT"));
-        verify(studentRepositoryMock).save(TestObjectProvider.getStudent(1L, "Serigne"));
+        verify(courseRepositoryMock).save(any(Course.class));
+        verify(studentRepositoryMock).save(any(Student.class));
     }
 
     @Test

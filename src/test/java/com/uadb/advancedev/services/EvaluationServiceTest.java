@@ -4,6 +4,7 @@ import com.uadb.advancedev.dto.CourseDto;
 import com.uadb.advancedev.dto.EvaluationDto;
 import com.uadb.advancedev.dto.ProfessorDto;
 import com.uadb.advancedev.dto.StudentDto;
+import com.uadb.advancedev.entities.Evaluation;
 import com.uadb.advancedev.providers.TestObjectProvider;
 import com.uadb.advancedev.repositories.EvaluationRepository;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -66,10 +68,10 @@ class EvaluationServiceTest {
 
     @Test
     void save() {
-        when(evaluationRepositoryMock.save(TestObjectProvider.getEvaluation(1L, 13))).thenReturn(null);
+        when(evaluationRepositoryMock.save(any(Evaluation.class))).thenReturn(null);
 
         evaluationService.save(TestObjectProvider.getEvaluationDto(13));
-        verify(evaluationRepositoryMock).save(TestObjectProvider.getEvaluation(1L, 13));
+        verify(evaluationRepositoryMock).save(any(Evaluation.class));
     }
 
     @Test

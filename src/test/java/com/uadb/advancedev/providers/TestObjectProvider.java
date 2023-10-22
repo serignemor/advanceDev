@@ -37,6 +37,10 @@ public class TestObjectProvider {
         Course course = new Course();
         course.setId(id);
         course.setName(name);
+        Student student = new Student();
+        student.setId(1);
+        student.setName("Fatou");
+        course.setStudentSet(Set.of(student));
         return course;
     }
 
@@ -130,5 +134,9 @@ public class TestObjectProvider {
 
     public static List<Professor> getProfessorList() {
         return List.of(getProfessor(1, "Prof"));
+    }
+
+    public static List<Rate> getRateList() {
+        return List.of(getRate(1, RateValue.GOOD));
     }
 }

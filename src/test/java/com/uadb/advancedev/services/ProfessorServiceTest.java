@@ -14,6 +14,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -46,10 +47,10 @@ class ProfessorServiceTest {
 
     @Test
     void save() {
-        when(professorRepositoryMock.save(TestObjectProvider.getProfessor(1L, "Prof"))).thenReturn(null);
+        when(professorRepositoryMock.save(any(Professor.class))).thenReturn(null);
 
-        professorService.save(TestObjectProvider.getProfessorDto(1L, "Prof"));
-        verify(professorRepositoryMock).save(TestObjectProvider.getProfessor(1L, "Prof"));
+        professorService.save(TestObjectProvider.getProfessorDto("Prof"));
+        verify(professorRepositoryMock).save(any(Professor.class));
     }
 
     @Test

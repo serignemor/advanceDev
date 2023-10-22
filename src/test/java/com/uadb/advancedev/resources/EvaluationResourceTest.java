@@ -1,10 +1,9 @@
 package com.uadb.advancedev.resources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.uadb.advancedev.entities.Student;
-import com.uadb.advancedev.entities.enums.RateValue;
+import com.uadb.advancedev.entities.Evaluation;
 import com.uadb.advancedev.providers.TestObjectProvider;
-import com.uadb.advancedev.repositories.StudentRepository;
+import com.uadb.advancedev.repositories.EvaluationRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,14 +17,12 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class StudentResourceTest {
+class EvaluationResourceTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -34,30 +31,32 @@ class StudentResourceTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private StudentRepository studentRepositoryMock;
+    private EvaluationRepository evaluationRepositoryMock;
 
 
     @Test
-    void getStudents() throws Exception {
-        mockMvc.perform(get("/students")
+    void getAllEvaluations() throws Exception {
+        mockMvc.perform(get("/evaluations")
         ).andExpect(status().isOk());
     }
 
     @Test
-    void getStudentById() throws Exception {
-        when(studentRepositoryMock.findById(1L)).thenReturn(Optional.of(TestObjectProvider.getStudent(1L, "Serigne")));
+    void getEvaluationById() throws Exception {
+        when(evaluationRepositoryMock.findById(1L)).thenReturn(Optional.of(TestObjectProvider.getEvaluation(1L, 14)));
 
-        mockMvc.perform(get("/students/1")
+        mockMvc.perform(get("/evaluations/1")
         ).andExpect(status().isOk());
     }
 
     @Test
     void save() throws Exception {
-        mockMvc.perform(post("/students")
+        when(evaluationRepositoryMock.save(any(Evaluation.class))).thenReturn(null);
+
+        mockMvc.perform(post("/evaluations")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                         objectMapper.writeValueAsString(
-                                TestObjectProvider.getStudentDto("Serigne")
+                                TestObjectProvider.getEvaluation(1L, 14)
                         )
                 )
         ).andExpect(status().isCreated());
@@ -65,14 +64,14 @@ class StudentResourceTest {
 
     @Test
     void update() throws Exception {
-        when(studentRepositoryMock.findById(1L)).thenReturn(Optional.of(TestObjectProvider.getStudent(1L, "Serigne")));
-        when(studentRepositoryMock.save(any(Student.class))).thenReturn(null);
+        when(evaluationRepositoryMock.findById(1L)).thenReturn(Optional.of(TestObjectProvider.getEvaluation(1L, 14)));
+        when(evaluationRepositoryMock.save(any(Evaluation.class))).thenReturn(null);
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/students/1")
-                .contentType("application/json")
+        mockMvc.perform(put("/evaluations/1")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(
                         objectMapper.writeValueAsString(
-                                TestObjectProvider.getRateDto(RateValue.NEUTRAL)
+                                TestObjectProvider.getEvaluation(1L, 14)
                         )
                 )
         ).andExpect(status().isOk());
@@ -80,10 +79,9 @@ class StudentResourceTest {
 
     @Test
     void delete() throws Exception {
-        when(studentRepositoryMock.findById(1L)).thenReturn(Optional.of(TestObjectProvider.getStudent(1L, "Serigne")));
+        when(evaluationRepositoryMock.findById(1L)).thenReturn(Optional.of(TestObjectProvider.getEvaluation(1L, 14)));
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/students/1"))
-                .andExpect(status().isNoContent());
-
+        mockMvc.perform(MockMvcRequestBuilders.delete("/evaluations/1")
+        ).andExpect(status().isNoContent());
     }
 }
